@@ -1,10 +1,11 @@
-﻿using System.Collections.Generic;
-using System.Linq;
+﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using AutoMapper;
 using LJMSCourse.PlatformService.Api.Data.Repositories;
 using LJMSCourse.PlatformService.Api.Models;
 using LJMSCourse.PlatformService.Api.Models.Dtos;
+using LJMSCourse.PlatformService.Api.Services;
 using Microsoft.AspNetCore.Mvc;
 
 namespace LJMSCourse.PlatformService.Api.Controllers
@@ -13,13 +14,18 @@ namespace LJMSCourse.PlatformService.Api.Controllers
     [Route("/api/v1/[controller]")]
     public class PlatformsController : ControllerBase
     {
+        private readonly ICommandDataService _dataService;
         private readonly IMapper _mapper;
         private readonly IPlatformRepository _repository;
 
-        public PlatformsController(IPlatformRepository repository, IMapper mapper)
+        public PlatformsController(
+            IPlatformRepository repository,
+            IMapper mapper,
+            ICommandDataService dataService)
         {
             _repository = repository;
             _mapper = mapper;
+            _dataService = dataService;
         }
 
         [HttpGet]
@@ -30,7 +36,7 @@ namespace LJMSCourse.PlatformService.Api.Controllers
             return Ok(_mapper.Map<IEnumerable<PlatformReadDto>>(platforms));
         }
 
-        [HttpGet("{id:int}", Name="GetPlatformById")]
+        [HttpGet("{id:int}", Name = "GetPlatformById")]
         public async Task<ActionResult<PlatformReadDto>> GetPlatformById(int id)
         {
             var platform = await _repository.GetByIdAsync(id);
@@ -48,6 +54,15 @@ namespace LJMSCourse.PlatformService.Api.Controllers
             await _repository.CreateAsync(platform);
 
             var platformReadDto = _mapper.Map<PlatformReadDto>(platform);
+
+            try
+            {
+                await _dataService.SendPlatformToCommand(platformReadDto);
+            }
+            catch (Exception ex)
+            {
+                Console.Write($"--> PlatformsController.CreatePlatform: Could not reach CommandService: {ex.Message}");
+            }
 
             return CreatedAtRoute(nameof(GetPlatformById), new { platformReadDto.Id }, platformReadDto);
         }
