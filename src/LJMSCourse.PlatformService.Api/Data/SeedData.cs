@@ -2,20 +2,34 @@
 using System.Linq;
 using LJMSCourse.PlatformService.Api.Models;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace LJMSCourse.PlatformService.Api.Data
 {
     public static class SeedData
     {
-        public static void Seed(IApplicationBuilder app)
+        public static void Seed(IApplicationBuilder app, bool isProduciton)
         {
             using var serviceScope = app.ApplicationServices.CreateScope();
-            Seed(serviceScope.ServiceProvider.GetService<AppDbContext>());
+            Seed(serviceScope.ServiceProvider.GetService<AppDbContext>(), isProduciton);
         }
 
-        private static void Seed(AppDbContext context)
+        private static void Seed(AppDbContext context, bool isProduction)
         {
+            if (isProduction)
+            {
+                Console.WriteLine("--> SeedData.Seed: Attempting to apply migrations");
+                try
+                {
+                    context.Database.Migrate();
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine($"--> SeedData.Seed: Could not apply migrations: {ex.Message}");
+                }
+            }
+
             if (!context.Platforms.Any())
             {
                 Console.WriteLine("--> SeedData.Seed: Seeding PlatformDb");
