@@ -9,6 +9,7 @@ namespace LJMSCourse.PlatformService.Api.Models.MappingProfiles
         {
             CreateMap<Platform, PlatformReadDto>();
             CreateMap<PlatformCreateDto, Platform>();
+            CreateMap<PlatformReadDto, PlatformPublishDto>();
         }
     }
 }

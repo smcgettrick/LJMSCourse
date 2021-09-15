@@ -1,6 +1,7 @@
 using System;
 using LJMSCourse.CommandService.Api.Data;
 using LJMSCourse.CommandService.Api.Data.Repositories;
+using LJMSCourse.CommandService.Api.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
@@ -23,6 +24,9 @@ namespace LJMSCourse.CommandService.Api
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddScoped<ICommandRepository, CommandRepository>();
+            services.AddSingleton<IEventProcessorService, EventProcessorService>();
+
+            services.AddHostedService<MessageBusService>();
 
             services.AddDbContext<AppDbContext>(options => options.UseInMemoryDatabase("CommandDb"));
 

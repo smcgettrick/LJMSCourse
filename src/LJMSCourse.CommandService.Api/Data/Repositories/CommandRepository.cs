@@ -34,6 +34,11 @@ namespace LJMSCourse.CommandService.Api.Data.Repositories
             return await _context.Platforms.AnyAsync(p => p.Id == platformId);
         }
 
+        public async Task<bool> ExternalPlatformExistsAsync(int externalPlatformId)
+        {
+            return await _context.Platforms.AnyAsync(p => p.ExternalId == externalPlatformId);
+        }
+
         public async Task<IEnumerable<Command>> GetAllCommandsForPlatform(int platformId)
         {
             return await _context.Commands
@@ -51,7 +56,7 @@ namespace LJMSCourse.CommandService.Api.Data.Repositories
 
         public async Task CreateCommandAsync(int platformId, Command command)
         {
-            _ = command ?? throw new ArgumentException(nameof(command));
+            _ = command ?? throw new ArgumentNullException(nameof(command));
 
             command.PlatformId = platformId;
             await _context.Commands.AddAsync(command);

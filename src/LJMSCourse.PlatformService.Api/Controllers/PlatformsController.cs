@@ -14,18 +14,18 @@ namespace LJMSCourse.PlatformService.Api.Controllers
     [Route("/api/v1/[controller]")]
     public class PlatformsController : ControllerBase
     {
-        private readonly ICommandDataService _dataService;
+        private readonly IMessageBusClient _messageBusClient;
         private readonly IMapper _mapper;
         private readonly IPlatformRepository _repository;
 
         public PlatformsController(
             IPlatformRepository repository,
-            IMapper mapper,
-            ICommandDataService dataService)
+            IMapper mapper, 
+            IMessageBusClient messageBusClient)
         {
             _repository = repository;
             _mapper = mapper;
-            _dataService = dataService;
+            _messageBusClient = messageBusClient;
         }
 
         [HttpGet]
@@ -57,11 +57,14 @@ namespace LJMSCourse.PlatformService.Api.Controllers
 
             try
             {
-                await _dataService.SendPlatformToCommand(platformReadDto);
+                var platformPublishDto = _mapper.Map<PlatformPublishDto>(platformReadDto);
+                platformPublishDto.Event = "Platform_Published";
+
+                await _messageBusClient.PublishPlatform(platformPublishDto);
             }
             catch (Exception ex)
             {
-                Console.Write($"--> PlatformsController.CreatePlatform: Could not reach CommandService: {ex.Message}");
+                Console.Write($"--> PlatformsController.CreatePlatform: Could not send to message bus: {ex.Message}");
             }
 
             return CreatedAtRoute(nameof(GetPlatformById), new { platformReadDto.Id }, platformReadDto);

@@ -3,8 +3,8 @@ using LJMSCourse.PlatformService.Api.Models.Dtos;
 
 namespace LJMSCourse.PlatformService.Api.Services
 {
-    public interface ICommandDataService
+    public interface IMessageBusClient
     {
-        Task SendPlatformToCommand(PlatformReadDto platformReadDto);
+        Task PublishPlatform(PlatformPublishDto platformPublishDto);
     }
 }

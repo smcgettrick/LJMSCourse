@@ -9,6 +9,7 @@ namespace LJMSCourse.CommandService.Api.Data.Repositories
         Task<IEnumerable<Platform>> GetAllPlatformsAsync();
         Task CreatePlatformAsync(Platform platform);
         Task<bool> PlatformExistsAsync(int platformId);
+        Task<bool> ExternalPlatformExistsAsync(int externalPlatformId);
 
         Task<IEnumerable<Command>> GetAllCommandsForPlatform(int platformId);
         Task<Command> GetCommandAsync(int platformId, int commandId);

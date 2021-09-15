@@ -44,7 +44,7 @@ namespace LJMSCourse.PlatformService.Api
             }
 
             services.AddScoped<IPlatformRepository, PlatformRepository>();
-            services.AddHttpClient<ICommandDataService, HttpCommandDataService>();
+            services.AddSingleton<IMessageBusClient, MessageBusClient>();
 
             services.AddControllers();
             services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
