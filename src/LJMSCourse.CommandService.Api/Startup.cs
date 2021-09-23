@@ -24,8 +24,10 @@ namespace LJMSCourse.CommandService.Api
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddScoped<ICommandRepository, CommandRepository>();
-            services.AddSingleton<IEventProcessorService, EventProcessorService>();
+            services.AddScoped<IGrpcPlatformService, GrpcPlatformService>();
 
+            services.AddSingleton<IEventProcessorService, EventProcessorService>();
+            
             services.AddHostedService<MessageBusService>();
 
             services.AddDbContext<AppDbContext>(options => options.UseInMemoryDatabase("CommandDb"));
@@ -55,6 +57,8 @@ namespace LJMSCourse.CommandService.Api
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints => { endpoints.MapControllers(); });
+
+            _ = SeedData.Seed(app);
         }
     }
 }

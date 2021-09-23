@@ -8,23 +8,23 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace LJMSCourse.CommandService.Api.Controllers
 {
+    [Route("api/c/[controller]")]
     [ApiController]
-    [Route("/api/v1/[controller]")]
-    public class CommandPlatformsController : ControllerBase
+    public class PlatformsController : ControllerBase
     {
-        private readonly ICommandRepository _repository;
         private readonly IMapper _mapper;
+        private readonly ICommandRepository _repository;
 
-        public CommandPlatformsController(ICommandRepository repository, IMapper mapper)
+        public PlatformsController(IMapper mapper, ICommandRepository repository)
         {
-            _repository = repository;
             _mapper = mapper;
+            _repository = repository;
         }
 
         [HttpGet]
         public async Task<ActionResult<IEnumerable<PlatformReadDto>>> GetAllPlatforms()
         {
-            Console.WriteLine("--> CommandPlatformsController.GetAllPlatforms: Received GET request");
+            Console.WriteLine("--> CommandsController.GetAllPlatforms: Received GET request");
 
             var platforms = await _repository.GetAllPlatformsAsync();
             return Ok(_mapper.Map<IEnumerable<PlatformReadDto>>(platforms));

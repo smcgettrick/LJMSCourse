@@ -1,9 +1,11 @@
 using System;
+using System.IO;
 using LJMSCourse.PlatformService.Api.Data;
 using LJMSCourse.PlatformService.Api.Data.Repositories;
 using LJMSCourse.PlatformService.Api.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -45,6 +47,7 @@ namespace LJMSCourse.PlatformService.Api
 
             services.AddScoped<IPlatformRepository, PlatformRepository>();
             services.AddSingleton<IMessageBusClient, MessageBusClient>();
+            services.AddGrpc();
 
             services.AddControllers();
             services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
@@ -67,7 +70,16 @@ namespace LJMSCourse.PlatformService.Api
             app.UseHttpsRedirection();
             app.UseRouting();
             app.UseAuthorization();
-            app.UseEndpoints(endpoints => { endpoints.MapControllers(); });
+            app.UseEndpoints(endpoints =>
+            {
+                endpoints.MapControllers();
+                endpoints.MapGrpcService<GrpcPlatformService>();
+
+                endpoints.MapGet("/protos/platforms.proto", async context =>
+                {
+                    await context.Response.WriteAsync(await File.ReadAllTextAsync("Protos/platforms.proto"));
+                });
+            });
 
             SeedData.Seed(app, env.IsProduction());
             

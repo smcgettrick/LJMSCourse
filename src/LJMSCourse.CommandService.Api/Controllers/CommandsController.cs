@@ -10,7 +10,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace LJMSCourse.CommandService.Api.Controllers
 {
     [ApiController]
-    [Route("/api/v1/[controller]")]
+    [Route("/api/c/platforms/{platformId}/[controller]")]
     public class CommandsController : ControllerBase
     {
         private readonly IMapper _mapper;

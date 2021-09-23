@@ -5,9 +5,9 @@ VisualStudioVersion = 16.0.31624.102
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{AA31E300-CC0F-41BA-8404-B7CF95C1003C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LJMSCourse.PlatformService.Api", "src\LJMSCourse.PlatformService.Api\LJMSCourse.PlatformService.Api.csproj", "{1EB0B834-EB6E-4B2F-A653-624A19BB1217}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LJMSCourse.PlatformService.Api", "src\LJMSCourse.PlatformService.Api\LJMSCourse.PlatformService.Api.csproj", "{1EB0B834-EB6E-4B2F-A653-624A19BB1217}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LJMSCourse.CommandService.Api", "src\LJMSCourse.CommandService.Api\LJMSCourse.CommandService.Api.csproj", "{8B59D8D7-289F-487B-9F41-762A1B6CC84E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LJMSCourse.CommandService.Api", "src\LJMSCourse.CommandService.Api\LJMSCourse.CommandService.Api.csproj", "{8B59D8D7-289F-487B-9F41-762A1B6CC84E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

@@ -31,7 +31,11 @@ spec:
   selector:
     app: platformservice
   ports:
-    - port: 80
+    - name: platformservice
+      port: 80
       targetPort: 80
-      name: platformservice
+      protocol: TCP
+    - name: platformgrpc
+      port: 666
+      targetPort: 666
       protocol: TCP

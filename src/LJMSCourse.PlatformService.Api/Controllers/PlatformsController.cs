@@ -11,7 +11,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace LJMSCourse.PlatformService.Api.Controllers
 {
     [ApiController]
-    [Route("/api/v1/[controller]")]
+    [Route("/api/[controller]")]
     public class PlatformsController : ControllerBase
     {
         private readonly IMessageBusClient _messageBusClient;
