@@ -1,0 +1,19 @@
+apiVersion : apps/v1
+kind: Deployment
+metadata:
+  name: "sdmlmsaks-63bd"
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: "sdmlmsaks-63bd"
+  template:
+    metadata:
+      labels:
+        app: "sdmlmsaks-63bd"
+    spec:
+      containers:
+        - name: "sdmlmsaks-63bd"
+          image: "sdmlmsacr.azurecr.io/sdmlmsaks"
+          ports:
+          - containerPort: 80
